@@ -153,5 +153,5 @@ in {
   # For Steam
   #hardware.opengl.driSupport32Bit = true;
 
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.03";
 }
