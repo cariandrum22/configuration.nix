@@ -2,17 +2,15 @@
   networking = {
     hostName = "redmagic";
 
-    # It's under the control of the Wicd.
-    wireless.enable = false;
-    useDHCP = false;
-
-    # Enable Wireless interface connection daemon.
-    wicd.enable = true;
+    networkmanager.enable = true;
 
     # Firewall
-    firewall.enable = true;
-    firewall.allowedTCPPorts = [ 3389 ];
-    # firewall.allowedUDPPorts = [ ... ];
+    firewall= {
+      enable = true;
+      checkReversePath = false;
+      allowedTCPPorts = [ 3389 ];
+      # allowedUDPPorts = [ ... ];
+    };
 
     # Hosts
     extraHosts =

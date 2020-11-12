@@ -2,13 +2,14 @@
 
 let
   unstable = import <unstable> { config.allowUnfree = true; };
-  all-hies = import (fetchTarball "https://github.com/infinisil/all-hies/tarball/master") {};
 in {
   imports =
     [
       ./hardware-configuration.nix
+      ./hardware.nix
       ./boot.nix
       ./environment.nix
+      ./fileSystems.nix
       ./fonts.nix
       ./i18n.nix
       ./networking.nix
@@ -30,128 +31,71 @@ in {
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    # Drivers
-    ntfs3g
+  environment = {
+    systemPackages = with pkgs; [
+      # NixOS Utilities
+      patchelf
 
-    # Teminal
-    kitty
+      # home-manager
+      home-manager
 
-    # home-manager
-    home-manager
+      # Security and Privacy
+      yubico-pam
+      openssl
+      gnupg
 
-    # nix-shell
-    any-nix-shell
+      # Utility
+      lm_sensors
+      pciutils
+      htop
+      file
+      p7zip
+      unzip
+      appimage-run
+      virtmanager
 
-    # Security
-    #yubico-pam
+      # Network
+      dnsutils
+      whois
+      netcat
+      dhcp
 
-    # System Utility
-    lm_sensors
-    pciutils
-    htop
-    file
-    p7zip
-    appimage-run
-    virtmanager
-    openssl
+      # Benchmark
+      stress-ng
+      geekbench
 
-    # Benchmark
-    stress-ng
-    geekbench
+      # Development
+      git
+      gcc
+      gnumake
+      emacs
+      zlib
 
-    # Network Utility
-    dnsutils
-    whois
-    netcat
+      # Terminal Multiplexer
+      tmux
+      screen
 
-    # Development
-    git
-    gcc
-    gnumake
-    emacs
-    unstable.vscode
-    unstable.cachix
-    (all-hies.selection { selector = p: { inherit (p) ghc882; }; })
-    unstable.jetbrains.datagrip
-    jq
-    mysql-client
-    mongodb-tools
-    #postgresql_9_6
-    postgresql_10
-    zlib
-    heroku
+      # X
+      xorg.xev
+      xorg.xmodmap
+      xorg.xrandr
+      xorg.xmessage
+      xsel
 
-    # Deep Learning
-    cudatoolkit
-    cudnn
+      # Gnome3
+      gnome3.networkmanagerapplet
+      gnome3.networkmanager_openvpn
+      gnome3.nautilus
+      gnome3.dconf
+      gnome3.evince
+      gnome3.gnome-keyring
+      gnome3.zenity
+      lxappearance
+    ];
+    shellInit = ''
+      export SSH_ASKPASS="${pkgs.gnome3.seahorse}/libexec/seahorse/ssh-askpass"
+    '';
+  };
 
-    # Compiler and Runtime
-    stack
-    rustup
-    jdk
-    unstable.go
-    dotnet-sdk
-    ruby_2_6
-    python3
-    nodejs
-
-    # DevOps
-    nixops
-    docker-compose
-    etcdctl
-    kubectl
-    helm
-    vagrant
-    vault
-    unstable.terraform
-    unstable.azure-cli
-    unstable.azure-storage-azcopy
-    certbot
-
-    # Utility
-    patchelf
-    tmux
-    xsel
-    ghq
-    direnv
-    fzf
-    google-drive-ocamlfuse
-    yubikey-manager
-    conky
-
-    # Xorg
-    xorg.xev
-    xorg.xmodmap
-    xorg.xrandr
-
-    # Desktop Environments
-    dmenu
-    xmobar
-    polybar
-    feh
-    picom
-
-    # GUI Applications
-    google-chrome
-    keybase
-    ark
-    partition-manager
-    kdeApplications.okular
-    _1password
-    slack
-    #steam
-    robo3t
-    xmind
-    ledger-live-desktop
-    yubikey-manager-qt
-    typora
-    remmina
-    libreoffice
-  ];
-
-  # For Steam
-  #hardware.opengl.driSupport32Bit = true;
-
-  system.stateVersion = "20.03";
+  system.stateVersion = "20.09";
 }

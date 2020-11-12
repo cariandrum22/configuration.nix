@@ -11,11 +11,13 @@
   #services.printing.enable = true;
 
   # Enable PC/SC daemon.
-  #services.pcscd.enable = true;
+  services.pcscd.enable = true;
 
   # For YubiKey and Ledger
-  services.udev.packages = [ pkgs.yubikey-personalization pkgs.ledger-udev-rules ];
-  hardware.ledger.enable = true;
+  services.udev.packages = [
+    pkgs.yubikey-personalization
+    pkgs.ledger-udev-rules
+  ];
 
   # Configure the X11 windowing system.
   services.xserver = {
@@ -41,21 +43,22 @@
     };
 
     # Configure Window Manager
-    windowManager.xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      extraPackages = haskellPackages: [
-        haskellPackages.xmonad-contrib
-        haskellPackages.xmonad-extras
-        haskellPackages.xmonad
-      ];
-    };
-
+    windowManager.xmonad.enable = true;
     displayManager.defaultSession = "none+xmonad";
   };
 
-#  services.xrdp = {
-#    enable = true;
-#    defaultWindowManager = "xterm";
-#  };
+  services.dbus.packages = [
+    pkgs.gnome3.gnome-keyring
+    pkgs.gcr
+  ];
+
+  services.gnome3 = {
+    at-spi2-core.enable = true;
+    tracker.enable = true;
+  };
+
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "xmonad";
+  };
 }

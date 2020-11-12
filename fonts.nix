@@ -12,10 +12,10 @@
       noto-fonts-cjk
       ipafont
       libertine
+      nerdfonts
     ];
 
     fontconfig = {
-      penultimate.enable = false;
       defaultFonts = {
         serif = [ "Linux Libertine" "IPAMincho" ];
         sansSerif = [ "Fira Code" "Source Han Code JP" ];

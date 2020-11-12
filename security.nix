@@ -1,4 +1,5 @@
 {
+  security.pam.services.login.enableGnomeKeyring = true;
   security.pki.certificates = [
     ''codeTakt Certificate Authority
       -----BEGIN CERTIFICATE-----
