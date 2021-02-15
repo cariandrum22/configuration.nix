@@ -53,6 +53,7 @@ in {
       unzip
       appimage-run
       virtmanager
+      dstat
 
       # Network
       dnsutils
