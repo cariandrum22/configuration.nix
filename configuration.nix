@@ -97,5 +97,7 @@ in {
     '';
   };
 
+  nix.trustedUsers = [ "root" "claude" ];
+
   system.stateVersion = "20.09";
 }
