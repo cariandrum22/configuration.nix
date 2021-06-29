@@ -52,7 +52,7 @@
     pkgs.gcr
   ];
 
-  services.gnome3 = {
+  services.gnome = {
     at-spi2-core.enable = true;
     tracker.enable = true;
   };
