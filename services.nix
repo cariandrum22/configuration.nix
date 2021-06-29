@@ -24,8 +24,11 @@
     enable = true;
     layout = "us";
 
-    # For natural crawling
-    libinput.enable = true;
+    # For natural scrolling
+    libinput = {
+      enable = true;
+      mouse.naturalScrolling = true;
+    };
 
     # I'm currently using a nVidia Graphics Card.
     videoDrivers = [ "nvidia" ];
@@ -37,7 +40,6 @@
         display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
           #!${pkgs.bash}/bin/bash
           ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
-          ${pkgs.xorg.xinput}/bin/xinput set-prop 'Kensington Expert Wireless TB Mouse' 'libinput Natural Scrolling Enabled' 1
         ''}
       '';
     };
