@@ -25,7 +25,7 @@ in {
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
-      unstable = import unstable {
+      unstable = import <unstable> {
         config = config.nixpkgs.config;
       };
     };
