@@ -61,4 +61,29 @@
     enable = true;
     defaultWindowManager = "xmonad";
   };
+
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    shares = {
+      TimeMachine = {
+        path = "/mnt/magnetic/disk0/TimeMachine";
+        browseable = "yes";
+        writable = "yes";
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:metadata" = "netatalk";
+	      "fruit:encoding" = "native";
+        "fruit:time machine" = "yes";
+        "fruit:time machine max size" = "2T";
+      };
+      Photos = {
+        path = "/mnt/magnetic/disk0/Photos";
+        browseable = "yes";
+        writable = "yes";
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:metadata" = "netatalk";
+	      "fruit:encoding" = "native";
+      };
+    };
+  };
 }

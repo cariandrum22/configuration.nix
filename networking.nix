@@ -8,8 +8,9 @@
     firewall= {
       enable = true;
       checkReversePath = false;
-      allowedTCPPorts = [ 3389 ];
-      # allowedUDPPorts = [ ... ];
+      allowPing = true;
+      allowedTCPPorts = [ 445 139 3389 ];
+      allowedUDPPorts = [ 137 138 ];
     };
 
     # Hosts
