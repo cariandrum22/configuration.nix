@@ -1,6 +1,6 @@
 {
   networking = {
-    hostName = "redmagic";
+    hostName = "eto";
 
     networkmanager.enable = true;
 
