@@ -91,10 +91,10 @@ in {
       xsel
 
       # Gnome3
-      gnome3.networkmanagerapplet
-      gnome3.networkmanager_openvpn
+      networkmanagerapplet
+      networkmanager-openvpn
       gnome3.nautilus
-      gnome3.dconf
+      dconf
       gnome3.evince
       gnome3.gnome-keyring
       gnome3.zenity
@@ -107,5 +107,5 @@ in {
 
   nix.trustedUsers = [ "root" "claude" ];
 
-  system.stateVersion = "21.11";
+  system.stateVersion = "22.05";
 }
