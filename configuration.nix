@@ -53,6 +53,7 @@ in {
 
       # Utility
       lm_sensors
+      liquidctl
       pciutils
       htop
       file
