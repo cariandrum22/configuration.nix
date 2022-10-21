@@ -1,8 +1,13 @@
 { pkgs, ... }:
 
 {
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # Configure the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      StreamLocalBindUnlink yes
+    '';
+  };
 
   # Enable the Keybase service.
   services.keybase.enable = true;
