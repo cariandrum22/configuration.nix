@@ -73,8 +73,8 @@
         browseable = "yes";
         writable = "yes";
         "vfs objects" = "catia fruit streams_xattr";
-        "fruit:metadata" = "netatalk";
-	      "fruit:encoding" = "native";
+        "fruit:metadata" = "stream";
+        "fruit:encoding" = "native";
         "fruit:time machine" = "yes";
         "fruit:time machine max size" = "2T";
       };
@@ -83,8 +83,8 @@
         browseable = "yes";
         writable = "yes";
         "vfs objects" = "catia fruit streams_xattr";
-        "fruit:metadata" = "netatalk";
-	      "fruit:encoding" = "native";
+        "fruit:metadata" = "stream";
+        "fruit:encoding" = "native";
       };
     };
   };
