@@ -1,40 +1,34 @@
 { config, pkgs, ... }:
 
-let
-  unstable = import <unstable> { config.allowUnfree = true; };
+let unstable = import <unstable> { config.allowUnfree = true; };
 in {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./hardware.nix
-      ./boot.nix
-      ./environment.nix
-      ./fileSystems.nix
-      ./fonts.nix
-      ./i18n.nix
-      ./networking.nix
-      ./programs.nix
-      ./time.nix
-      ./security.nix
-      ./services.nix
-      ./sound.nix
-      ./users.nix
-      ./virtualisation.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./hardware.nix
+    ./boot.nix
+    ./environment.nix
+    ./fileSystems.nix
+    ./fonts.nix
+    ./i18n.nix
+    ./networking.nix
+    ./programs.nix
+    ./time.nix
+    ./security.nix
+    ./services.nix
+    ./sound.nix
+    ./users.nix
+    ./virtualisation.nix
+  ];
 
   nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    package = unstable.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
   };
 
   nixpkgs.config = {
     allowUnfree = true;
     packageOverrides = pkgs: {
-      unstable = import <unstable> {
-        config = config.nixpkgs.config;
-      };
+      unstable = import <unstable> { config = config.nixpkgs.config; };
     };
   };
 

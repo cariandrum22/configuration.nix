@@ -1,4 +1,4 @@
-{ config, pkgs, fetchurl, ... }:
+{ pkgs, ... }:
 
 {
   # Enable the OpenSSH daemon.
@@ -14,10 +14,8 @@
   services.pcscd.enable = true;
 
   # For YubiKey and Ledger
-  services.udev.packages = [
-    pkgs.yubikey-personalization
-    pkgs.ledger-udev-rules
-  ];
+  services.udev.packages =
+    [ pkgs.yubikey-personalization pkgs.ledger-udev-rules ];
 
   # Configure the X11 windowing system.
   services.xserver = {
@@ -37,10 +35,12 @@
     displayManager.lightdm = {
       enable = true;
       extraSeatDefaults = ''
-        display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
-          #!${pkgs.bash}/bin/bash
-          ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
-        ''}
+        display-setup-script=${
+          pkgs.writeScript "lightdm-display-setup" ''
+            #!${pkgs.bash}/bin/bash
+            ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
+          ''
+        }
       '';
     };
 
@@ -49,10 +49,7 @@
     displayManager.defaultSession = "none+xmonad";
   };
 
-  services.dbus.packages = [
-    pkgs.gnome3.gnome-keyring
-    pkgs.gcr
-  ];
+  services.dbus.packages = [ pkgs.gnome3.gnome-keyring pkgs.gcr ];
 
   services.gnome = {
     at-spi2-core.enable = true;
