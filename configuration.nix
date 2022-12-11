@@ -1,7 +1,8 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let unstable = import <unstable> { config.allowUnfree = true; };
-in {
+in
+{
   imports = [
     ./hardware-configuration.nix
     ./hardware.nix
@@ -22,7 +23,11 @@ in {
 
   nix = {
     package = unstable.nix;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "root" "claude" ];
+      max-jobs = lib.mkDefault 28;
+    };
   };
 
   nixpkgs.config = {
@@ -100,7 +105,5 @@ in {
     '';
   };
 
-  nix.trustedUsers = [ "root" "claude" ];
-
-  system.stateVersion = "22.05";
+  system.stateVersion = "22.11";
 }
