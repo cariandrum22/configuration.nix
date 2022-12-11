@@ -93,7 +93,7 @@ in
       # Gnome3
       networkmanagerapplet
       networkmanager-openvpn
-      gnome3.nautilus
+      cinnamon.nemo
       dconf
       gnome3.evince
       gnome3.gnome-keyring
