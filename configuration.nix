@@ -58,7 +58,6 @@ in
       file
       p7zip
       unzip
-      appimage-run
       virtmanager
       dstat
 
