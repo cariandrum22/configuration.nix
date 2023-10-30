@@ -78,6 +78,7 @@ in
       gnumake
       emacs
       zlib
+      llvmPackages.libstdcxxClang
 
       # Terminal Multiplexer
       tmux
