@@ -49,6 +49,7 @@ in
       yubico-pam
       openssl
       gnupg
+      libsecret
 
       # Utility
       lm_sensors
@@ -89,14 +90,13 @@ in
       xorg.xmessage
       xsel
 
-      # Gnome3
+      # Gnome
       networkmanagerapplet
       networkmanager-openvpn
       cinnamon.nemo
       dconf
-      gnome3.evince
-      gnome3.gnome-keyring
-      gnome3.zenity
+      evince
+      gnome.zenity
       lxappearance
     ];
     shellInit = ''

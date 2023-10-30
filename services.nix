@@ -14,7 +14,7 @@
     keybase.enable = true;
 
     # Enable CUPS to print documents.
-    printing= {
+    printing = {
       enable = true;
       drivers = with pkgs; [ cnijfilter2 ];
     };
@@ -69,6 +69,7 @@
     gnome = {
       at-spi2-core.enable = true;
       tracker.enable = true;
+      gnome-keyring.enable = true;
     };
 
     samba = {
