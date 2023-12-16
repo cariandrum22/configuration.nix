@@ -59,14 +59,13 @@ in
       file
       p7zip
       unzip
-      virtmanager
+      virt-manager
       dstat
 
       # Network
       dnsutils
       whois
       netcat
-      dhcp
 
       # Benchmark
       stress-ng
@@ -105,5 +104,5 @@ in
     '';
   };
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }

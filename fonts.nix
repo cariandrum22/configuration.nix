@@ -3,8 +3,8 @@
 {
   # Set multiple fonts for different languages
   fonts = {
-    enableDefaultFonts = true;
-    fonts = with pkgs; [
+    enableDefaultPackages = true;
+    packages = with pkgs; [
       fira-code
       fira-code-symbols
       fira-mono
