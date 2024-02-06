@@ -10,8 +10,5 @@
     };
   };
 
-  console = {
-    font = "fira-code";
-    keyMap = "us";
-  };
+  console.keyMap = "us";
 }
