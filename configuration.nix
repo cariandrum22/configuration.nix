@@ -22,7 +22,7 @@ in
   ];
 
   nix = {
-    package = unstable.nix;
+    package = unstable.nixVersions.nix_2_20;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       trusted-users = [ "root" "claude" ];
