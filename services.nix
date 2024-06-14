@@ -22,7 +22,7 @@
     # Enable Avahi daemon.
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
     };
 
     # Enable PC/SC daemon.
@@ -35,13 +35,7 @@
     # Configure the X11 windowing system.
     xserver = {
       enable = true;
-      layout = "us";
-
-      # For natural scrolling
-      libinput = {
-        enable = true;
-        mouse.naturalScrolling = true;
-      };
+      xkb.layout = "us";
 
       # I'm currently using a nVidia Graphics Card.
       videoDrivers = [ "nvidia" ];
@@ -61,8 +55,15 @@
 
       # Configure Window Manager
       windowManager.xmonad.enable = true;
-      displayManager.defaultSession = "none+xmonad";
     };
+
+    # For natural scrolling
+    libinput = {
+      enable = true;
+      mouse.naturalScrolling = true;
+    };
+
+    displayManager.defaultSession = "none+xmonad";
 
     dbus.packages = [ pkgs.gnome3.gnome-keyring pkgs.gcr ];
 

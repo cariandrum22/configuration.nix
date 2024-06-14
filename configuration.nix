@@ -22,7 +22,6 @@ in
   ];
 
   nix = {
-    package = unstable.nixVersions.nix_2_20;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       trusted-users = [ "root" "claude" ];
@@ -104,5 +103,5 @@ in
     '';
   };
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.05";
 }
