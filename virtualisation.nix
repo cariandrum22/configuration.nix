@@ -1,6 +1,12 @@
 {
   virtualisation = {
-    docker.enable = true;
+    docker = {
+      enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+    };
     libvirtd.enable = true;
   };
 }
