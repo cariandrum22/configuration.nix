@@ -1,7 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let unstable = import <unstable> { config.allowUnfree = true; };
-in
 {
   imports = [
     ./hardware-configuration.nix
