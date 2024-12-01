@@ -17,8 +17,14 @@
 
     fontconfig = {
       defaultFonts = {
-        serif = [ "Linux Libertine" "IPAMincho" ];
-        sansSerif = [ "Fira Code" "Source Han Code JP" ];
+        serif = [
+          "Linux Libertine"
+          "IPAMincho"
+        ];
+        sansSerif = [
+          "Fira Code"
+          "Source Han Code JP"
+        ];
         monospace = [ "Fira Code" ];
       };
     };

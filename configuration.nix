@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -14,24 +19,27 @@
     ./time.nix
     ./security.nix
     ./services.nix
-    ./sound.nix
     ./users.nix
     ./virtualisation.nix
   ];
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "claude" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        "root"
+        "claude"
+      ];
       max-jobs = lib.mkDefault 28;
     };
   };
 
   nixpkgs.config = {
     allowUnfree = true;
-    packageOverrides = pkgs: {
-      unstable = import <unstable> { config = config.nixpkgs.config; };
-    };
+    packageOverrides = pkgs: { unstable = import <unstable> { config = config.nixpkgs.config; }; };
   };
 
   environment = {
@@ -90,19 +98,27 @@
       # Gnome
       networkmanagerapplet
       networkmanager-openvpn
-      cinnamon.nemo
+      nemo
       dconf
       evince
-      gnome.zenity
+      zenity
       lxappearance
 
       # Game
       mangohud
+      # emulator
+      qemu
+      (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
+        qemu-system-x86_64 \
+          -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
+          "$@"
+      '')
+
     ];
     shellInit = ''
-      export SSH_ASKPASS="${pkgs.gnome3.seahorse}/libexec/seahorse/ssh-askpass"
+      export SSH_ASKPASS="${pkgs.seahorse}/libexec/seahorse/ssh-askpass"
     '';
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 }

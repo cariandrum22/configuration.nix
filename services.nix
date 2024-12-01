@@ -29,8 +29,10 @@
     pcscd.enable = true;
 
     # For YubiKey and Ledger
-    udev.packages =
-      [ pkgs.yubikey-personalization pkgs.ledger-udev-rules ];
+    udev.packages = [
+      pkgs.yubikey-personalization
+      pkgs.ledger-udev-rules
+    ];
 
     # Configure the X11 windowing system.
     xserver = {
@@ -44,12 +46,10 @@
       displayManager.lightdm = {
         enable = true;
         extraSeatDefaults = ''
-          display-setup-script=${
-            pkgs.writeScript "lightdm-display-setup" ''
-              #!${pkgs.bash}/bin/bash
-              ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
-            ''
-          }
+          display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
+            #!${pkgs.bash}/bin/bash
+            ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
+          ''}
         '';
       };
 
@@ -65,7 +65,10 @@
 
     displayManager.defaultSession = "none+xmonad";
 
-    dbus.packages = [ pkgs.gnome-keyring pkgs.gcr ];
+    dbus.packages = [
+      pkgs.gnome-keyring
+      pkgs.gcr
+    ];
 
     gnome = {
       at-spi2-core.enable = true;
