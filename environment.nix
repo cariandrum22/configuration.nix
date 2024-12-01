@@ -2,6 +2,6 @@
 
 {
   environment.shellInit = ''
-    export SSH_ASKPASS="${pkgs.gnome3.seahorse}/libexec/seahorse/ssh-askpass"
+    export SSH_ASKPASS="${pkgs.seahorse}/libexec/seahorse/ssh-askpass"
   '';
 }

@@ -65,18 +65,18 @@
 
     displayManager.defaultSession = "none+xmonad";
 
-    dbus.packages = [ pkgs.gnome3.gnome-keyring pkgs.gcr ];
+    dbus.packages = [ pkgs.gnome-keyring pkgs.gcr ];
 
     gnome = {
       at-spi2-core.enable = true;
-      tracker.enable = true;
+      tinysparql.enable = true;
       gnome-keyring.enable = true;
     };
 
     samba = {
       enable = true;
-      securityType = "user";
-      shares = {
+      settings = {
+        global.Security = "user";
         TimeMachine = {
           path = "/mnt/magnetic/disk0/TimeMachine";
           browseable = "yes";

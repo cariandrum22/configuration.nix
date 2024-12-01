@@ -9,7 +9,7 @@
       fira-code-symbols
       fira-mono
       source-han-code-jp
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       ipafont
       libertine
       nerdfonts
