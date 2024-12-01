@@ -74,7 +74,10 @@
       at-spi2-core.enable = true;
       tinysparql.enable = true;
       gnome-keyring.enable = true;
+      gnome-online-accounts.enable = true;
     };
+
+    gvfs.enable = true;
 
     samba = {
       enable = true;
