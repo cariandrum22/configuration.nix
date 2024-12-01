@@ -43,13 +43,18 @@
       videoDrivers = [ "nvidia" ];
 
       # Configure Display Manager.
-      displayManager.lightdm = {
-        enable = true;
-        extraSeatDefaults = ''
-          display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
-            #!${pkgs.bash}/bin/bash
-            ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
-          ''}
+      displayManager = {
+        lightdm = {
+          enable = true;
+          extraSeatDefaults = ''
+            display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
+              #!${pkgs.bash}/bin/bash
+              ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
+            ''}
+          '';
+        };
+        sessionCommands = ''
+          dbus-update-activation-environment --systemd DISPLAY
         '';
       };
 
