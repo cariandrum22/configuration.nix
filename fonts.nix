@@ -12,7 +12,8 @@
       noto-fonts-cjk-sans
       ipafont
       libertine
-      nerdfonts
+      nerd-fonts.fira-code
+      nerd-fonts.fira-mono
     ];
 
     fontconfig = {

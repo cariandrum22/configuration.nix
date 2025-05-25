@@ -65,7 +65,7 @@
       p7zip
       unzip
       virt-manager
-      dstat
+      dool
 
       # Network
       dnsutils
@@ -120,5 +120,5 @@
     '';
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }
