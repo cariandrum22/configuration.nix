@@ -15,5 +15,6 @@
       open = true;
       modesetting.enable = true;
     };
+    nvidia-container-toolkit.enable = true;
   };
 }
