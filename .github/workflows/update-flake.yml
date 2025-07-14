@@ -1,0 +1,37 @@
+name: Update flake.lock
+
+on:
+  schedule:
+    # Run every Monday at 00:00 UTC
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@v20
+        with:
+          pr-title: "chore: update flake.lock"
+          pr-body: |
+            Automated update of `flake.lock` file.
+
+            This PR updates the following inputs to their latest versions.
+            Please review the changes and ensure all tests pass before merging.
+          pr-labels: |
+            dependencies
+            automated

@@ -1,5 +1,7 @@
 # configuration.nix
 
+[![CI](https://github.com/cariandrum22/configuration.nix/actions/workflows/ci.yml/badge.svg)](https://github.com/cariandrum22/configuration.nix/actions/workflows/ci.yml)
+
 A NixOS configuration managed with Nix Flakes.
 
 ## System Requirements
@@ -53,6 +55,15 @@ The following checks run automatically:
 - markdownlint: Enforces consistent style
 - prettier: Formats Markdown files
 
+**YAML files:**
+
+- yamllint: Validates YAML syntax and style
+- prettier: Formats YAML files
+
+**GitHub Actions:**
+
+- actionlint: Validates workflow syntax, detects type errors, and security issues
+
 **Commit messages:**
 
 - commitizen: Enforces Conventional Commits format
@@ -86,4 +97,26 @@ Run all checks manually:
 
 ```shell
 nix develop -c pre-commit run --all-files
+```
+
+## Continuous Integration
+
+This repository uses GitHub Actions for automated testing:
+
+- **Flake Check**: Validates the flake configuration
+- **Lint**: Runs all pre-commit hooks on the codebase
+- **Build**: Tests building NixOS configurations
+- **Format Check**: Verifies code formatting
+
+All checks run on pull requests and pushes to the main branch.
+The CI uses Nix caching for faster builds.
+
+### Dependency Updates
+
+**Nix flake inputs** are automatically updated weekly via automated PR workflow.
+
+To manually update flake dependencies:
+
+```shell
+nix flake update
 ```

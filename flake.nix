@@ -56,8 +56,23 @@
             };
             prettier = {
               enable = true;
-              types_or = [ "markdown" ];
+              types_or = [
+                "markdown"
+                "yaml"
+              ];
               excludes = [ "^.pre-commit-config\\.yaml$" ];
+            };
+
+            yamllint = {
+              enable = true;
+              settings = {
+                preset = "relaxed";
+              };
+            };
+
+            # GitHub Actions
+            actionlint = {
+              enable = true;
             };
 
             # Commit message

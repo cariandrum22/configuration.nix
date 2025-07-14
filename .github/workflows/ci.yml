@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-flake:
+    name: Check flake
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Check flake
+        run: nix flake check --impure
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Run pre-commit hooks
+        run: |
+          nix develop --impure --command bash -c "pre-commit run --all-files"
+
+  build:
+    name: Build NixOS configurations
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: [eto]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Create dummy hardware configuration
+        run: |
+          sudo mkdir -p /etc/nixos
+          cat > hardware-config.nix << 'EOF'
+          { config, lib, pkgs, modulesPath, ... }:
+          {
+            boot.initrd.availableKernelModules = [
+              "ahci" "xhci_pci" "virtio_pci" "virtio_blk"
+            ];
+            boot.initrd.kernelModules = [ ];
+            boot.kernelModules = [ "kvm-intel" ];
+            boot.extraModulePackages = [ ];
+
+            fileSystems."/" = {
+              device = "/dev/disk/by-label/nixos";
+              fsType = "ext4";
+            };
+
+            fileSystems."/boot" = {
+              device = "/dev/disk/by-label/boot";
+              fsType = "vfat";
+            };
+
+            swapDevices = [ ];
+
+            hardware.cpu.intel.updateMicrocode =
+              lib.mkDefault config.hardware.enableRedistributableFirmware;
+          }
+          EOF
+          sudo mv hardware-config.nix /etc/nixos/hardware-configuration.nix
+
+      - name: Build ${{ matrix.host }} configuration
+        run: |
+          nix build --impure \
+            .#nixosConfigurations.\
+            ${{ matrix.host }}.config.system.build.toplevel
+
+  format-check:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Check Nix formatting
+        run: |
+          nix develop --impure --command bash -c "nixfmt --check **/*.nix"
+
+      - name: Check Markdown formatting
+        run: |
+          nix develop --impure --command bash -c "prettier --check **/*.md"
