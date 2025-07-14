@@ -7,8 +7,7 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
-    ./hardware.nix
+    ./hardware.nix # This now handles hardware-configuration.nix conditionally
     ./boot.nix
     ./environment.nix
     ./fileSystems.nix
