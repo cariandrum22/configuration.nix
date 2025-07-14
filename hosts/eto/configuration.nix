@@ -38,7 +38,9 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    packageOverrides = pkgs: { unstable = import <unstable> { config = config.nixpkgs.config; }; };
+    packageOverrides = pkgs: {
+      unstable = import <unstable> { inherit (config.nixpkgs) config; };
+    };
   };
 
   environment = {

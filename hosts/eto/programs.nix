@@ -1,14 +1,16 @@
 {
-  programs.fish.enable = true;
+  programs = {
+    fish.enable = true;
 
-  # Gnome3
-  programs.dconf.enable = true;
-  programs.seahorse.enable = true;
+    # Gnome3
+    dconf.enable = true;
+    seahorse.enable = true;
 
-  # Game
-  programs.steam = {
-    enable = true;
-    gamescopeSession.enable = true;
+    # Game
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
+    gamemode.enable = true;
   };
-  programs.gamemode.enable = true;
 }

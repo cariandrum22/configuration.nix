@@ -8,6 +8,10 @@
   fileSystems."/mnt/windows/disk0" = {
     device = "/dev/nvme1n1p4";
     fsType = "ntfs";
-    options = [ "rw" "nofail" "x-systemd.automount" ];
+    options = [
+      "rw"
+      "nofail"
+      "x-systemd.automount"
+    ];
   };
 }

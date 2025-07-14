@@ -13,10 +13,10 @@
       ...
     }@inputs:
     let
-      pkgs = import nixpkgs {
-        config = { allowUnfree = true; };
-      };
-      supportedSystems = [ "x86_64-linux" "aarch64-linux" ];
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
@@ -32,14 +32,51 @@
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
+            # Nix
             nixfmt-rfc-style.enable = true;
+            deadnix = {
+              enable = true;
+              settings = {
+                noLambdaArg = true;
+                noLambdaPatternNames = true;
+              };
+            };
+            statix.enable = true;
+
+            # Markdown
+            markdownlint = {
+              enable = true;
+              settings = {
+                configuration = {
+                  MD013 = false; # Line length
+                  MD033 = false; # Inline HTML
+                  MD041 = false; # First line in file should be a top level heading
+                };
+              };
+            };
+            prettier = {
+              enable = true;
+              types_or = [ "markdown" ];
+              excludes = [ "^.pre-commit-config\\.yaml$" ];
+            };
+
+            # Commit message
+            commitizen = {
+              enable = true;
+              stages = [ "commit-msg" ];
+            };
           };
         };
       });
       devShells = forAllSystems (system: {
         default = nixpkgs.legacyPackages.${system}.mkShell {
           inherit (self.checks.${system}.pre-commit-check) shellHook;
-          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+          buildInputs =
+            with nixpkgs.legacyPackages.${system};
+            [
+              nil
+            ]
+            ++ self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });
     };
