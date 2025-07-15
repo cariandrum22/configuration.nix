@@ -121,10 +121,7 @@ jobs:
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@v6
 
-      - name: Check Nix formatting
+      - name: Check formatting with pre-commit
         run: |
-          nix develop --impure --command bash -c "nixfmt --check **/*.nix"
-
-      - name: Check Markdown formatting
-        run: |
-          nix develop --impure --command bash -c "prettier --check **/*.md"
+          nix develop --impure --command pre-commit run nixfmt-rfc-style --all-files
+          nix develop --impure --command pre-commit run prettier --all-files
