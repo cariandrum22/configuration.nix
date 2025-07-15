@@ -2,14 +2,6 @@
 
 {
   services = {
-    # Configure the OpenSSH daemon.
-    openssh = {
-      enable = true;
-      extraConfig = ''
-        StreamLocalBindUnlink yes
-      '';
-    };
-
     # Enable the Keybase service.
     keybase.enable = true;
 
@@ -34,55 +26,19 @@
       pkgs.ledger-udev-rules
     ];
 
-    # Configure the X11 windowing system.
+    # Configure the X11 windowing system with host-specific settings.
     xserver = {
-      enable = true;
-      xkb.layout = "us";
-
       # I'm currently using a nVidia Graphics Card.
       videoDrivers = [ "nvidia" ];
 
-      # Configure Display Manager.
-      displayManager = {
-        lightdm = {
-          enable = true;
-          extraSeatDefaults = ''
-            display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
-              #!${pkgs.bash}/bin/bash
-              ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
-            ''}
-          '';
-        };
-        sessionCommands = ''
-          dbus-update-activation-environment --systemd DISPLAY
-        '';
-      };
-
-      # Configure Window Manager
-      windowManager.xmonad.enable = true;
+      # Configure Display Manager with host-specific display setup.
+      displayManager.lightdm.extraSeatDefaults = ''
+        display-setup-script=${pkgs.writeScript "lightdm-display-setup" ''
+          #!${pkgs.bash}/bin/bash
+          ${pkgs.xorg.xrandr}/bin/xrandr --output DP-2 --mode 3840x2160 --rate 60.0 --primary --output DP-4 --mode 3840x2160 --rate 60.0 --left-of DP-2
+        ''}
+      '';
     };
-
-    # For natural scrolling
-    libinput = {
-      enable = true;
-      mouse.naturalScrolling = true;
-    };
-
-    displayManager.defaultSession = "none+xmonad";
-
-    dbus.packages = [
-      pkgs.gnome-keyring
-      pkgs.gcr
-    ];
-
-    gnome = {
-      at-spi2-core.enable = true;
-      tinysparql.enable = true;
-      gnome-keyring.enable = true;
-      gnome-online-accounts.enable = true;
-    };
-
-    gvfs.enable = true;
 
     samba = {
       enable = true;
