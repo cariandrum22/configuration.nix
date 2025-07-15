@@ -100,6 +100,16 @@ Run all checks manually:
 nix develop -c pre-commit run --all-files
 ```
 
+### Testing GitHub Actions Locally
+
+Test GitHub Actions workflows locally using act:
+
+```shell
+nix develop -c act -l  # List available workflows
+nix develop -c act     # Run default push event workflows
+nix develop -c act -j flake-check  # Run specific job
+```
+
 ## Continuous Integration
 
 This repository uses GitHub Actions for automated testing:

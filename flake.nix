@@ -230,6 +230,9 @@
               ripgrep
               fd
               jq
+
+              # CI testing
+              act
             ]
             ++ self.checks.${system}.pre-commit-check.enabledPackages;
         };
