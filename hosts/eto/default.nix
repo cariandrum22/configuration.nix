@@ -81,6 +81,7 @@
       enable = true;
       extraConfig = ''
         StreamLocalBindUnlink yes
+        UseDNS no
       '';
     };
 

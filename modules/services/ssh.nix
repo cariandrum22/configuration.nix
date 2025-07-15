@@ -66,8 +66,6 @@ in
         # Security hardening
         KbdInteractiveAuthentication = false;
         X11Forwarding = mkDefault false;
-        # Performance - important for local networks without DNS
-        UseDNS = mkDefault false;
       };
       inherit (cfg) extraConfig;
     };
