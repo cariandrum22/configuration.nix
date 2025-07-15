@@ -103,8 +103,7 @@ jobs:
       - name: Build ${{ matrix.host }} configuration
         run: |
           nix build --impure \
-            .#nixosConfigurations.\
-            ${{ matrix.host }}.config.system.build.toplevel
+            .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
 
   format-check:
     name: Check formatting
