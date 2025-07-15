@@ -1,6 +1,8 @@
 # configuration.nix
 
-[![CI](https://github.com/cariandrum22/configuration.nix/actions/workflows/ci.yml/badge.svg)](https://github.com/cariandrum22/configuration.nix/actions/workflows/ci.yml)
+[![CI](https://github.com/cariandrum22/configuration.nix/actions/workflows/ci.yml/badge.svg)][ci]
+
+[ci]: https://github.com/cariandrum22/configuration.nix/actions/workflows/ci.yml
 
 A NixOS configuration managed with Nix Flakes.
 
@@ -21,8 +23,8 @@ sudo nixos-rebuild switch --flake .#<hostname> --impure
 
 Replace `<hostname>` with your actual host configuration name.
 
-Note: The `--impure` flag is required as the configuration dynamically
-imports `/etc/nixos/hardware-configuration.nix` when available.
+Note: The `--impure` flag is required as the configuration dynamically imports
+`/etc/nixos/hardware-configuration.nix` when available.
 
 ## Development
 
@@ -41,8 +43,7 @@ This provides:
 
 ### Pre-commit Hooks
 
-This project uses pre-commit hooks to maintain code quality.
-The following checks run automatically:
+This project uses pre-commit hooks to maintain code quality. The following checks run automatically:
 
 **Nix files:**
 
@@ -108,8 +109,8 @@ This repository uses GitHub Actions for automated testing:
 - **Build**: Tests building NixOS configurations
 - **Format Check**: Verifies code formatting
 
-All checks run on pull requests and pushes to the main branch.
-The CI uses Nix caching for faster builds.
+All checks run on pull requests and pushes to the main branch. The CI uses Nix caching for faster
+builds.
 
 ### Dependency Updates
 
