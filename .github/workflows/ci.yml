@@ -1,0 +1,127 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-flake:
+    name: Check flake
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Check flake
+        run: |
+          # For CI, we need to ensure hardware configuration exists
+          if [ ! -f /etc/nixos/hardware-configuration.nix ]; then
+            echo "Creating dummy hardware configuration for CI..."
+            sudo mkdir -p /etc/nixos
+            sudo tee /etc/nixos/hardware-configuration.nix > /dev/null << 'EOF'
+          { config, lib, pkgs, modulesPath, ... }:
+          {
+            fileSystems."/" = {
+              device = "/dev/disk/by-label/nixos";
+              fsType = "ext4";
+            };
+          }
+          EOF
+          fi
+          nix flake check --impure
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Run pre-commit hooks
+        run: |
+          nix develop --impure --command bash -c "pre-commit run --all-files"
+
+  build:
+    name: Build NixOS configurations
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: [eto]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Create dummy hardware configuration
+        run: |
+          sudo mkdir -p /etc/nixos
+          sudo tee /etc/nixos/hardware-configuration.nix > /dev/null << 'EOF'
+          { config, lib, pkgs, modulesPath, ... }:
+          {
+            boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_blk" ];
+            boot.kernelModules = [ ];
+
+            fileSystems."/" = {
+              device = "/dev/disk/by-label/nixos";
+              fsType = "ext4";
+            };
+          }
+          EOF
+
+      - name: Build ${{ matrix.host }} configuration
+        run: |
+          nix build --impure \
+            .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+  format-check:
+    name: Check formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v11
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Setup Nix cache
+        uses: DeterminateSystems/magic-nix-cache-action@v6
+
+      - name: Check formatting with pre-commit
+        run: |
+          nix develop --impure --command pre-commit run nixfmt-rfc-style --all-files
+          nix develop --impure --command pre-commit run prettier --all-files
