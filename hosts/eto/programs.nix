@@ -12,5 +12,13 @@
       gamescopeSession.enable = true;
     };
     gamemode.enable = true;
+
+    _1password = {
+      enable = true;
+    };
+    _1password-gui = {
+      enable = true;
+      polkitPolicyOwners = [ "claude" ];
+    };
   };
 }

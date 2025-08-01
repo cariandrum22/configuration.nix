@@ -10,6 +10,7 @@
       "docker"
       "libvirtd"
       "vboxusers"
+      "plugdev" # For fingerprint scanner access
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICHtv7BugMwASTVv4+FZi3HlSke0cCNogLuTQQVm/aWc"
