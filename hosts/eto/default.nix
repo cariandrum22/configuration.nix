@@ -23,7 +23,9 @@
     ../../modules/profiles/developer.nix
     ../../modules/profiles/japanese.nix
     ../../modules/services/ssh.nix
+    ../../modules/services/polkit-agent.nix
     ../../modules/security/certificates.nix
+    ../../modules/security/fingerprint.nix
 
     # User configuration
     ./users.nix
@@ -85,8 +87,26 @@
       '';
     };
 
+    services.polkitAgent = {
+      enable = true;
+      package = pkgs.polkit_gnome; # Lightweight, works well with XMonad
+    };
+
     security.certificates = {
       enableInternalCAs = true;
+    };
+
+    security.fingerprint = {
+      enable = true;
+      enablePAM = true;
+      autoDetectDisplayManager = true; # Automatically configures LightDM
+      # Extended PAM services for comprehensive fingerprint support
+      pamServices = [
+        "login" # Console login
+        "sudo" # Elevated commands
+        "polkit-1" # GUI authentication dialogs
+        "lightdm-greeter" # Login screen (additional to auto-detected lightdm)
+      ];
     };
   };
 
