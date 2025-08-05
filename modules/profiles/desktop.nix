@@ -63,16 +63,13 @@ in
           enable = true;
           xkb.layout = mkDefault "us";
 
-          # Display manager
+          # Display manager - LightDM and GDM still under xserver
           displayManager = mkMerge [
             (mkIf (cfg.displayManager == "lightdm") {
               lightdm.enable = true;
             })
             (mkIf (cfg.displayManager == "gdm") {
               gdm.enable = true;
-            })
-            (mkIf (cfg.displayManager == "sddm") {
-              sddm.enable = true;
             })
             {
               sessionCommands = ''
@@ -92,6 +89,10 @@ in
           ];
         };
       }
+      # SDDM configuration (new location)
+      (mkIf (cfg.displayManager == "sddm") {
+        displayManager.sddm.enable = true;
+      })
       # Default session
       {
         displayManager.defaultSession = mkIf (cfg.windowManager != "none") "none+${cfg.windowManager}";
