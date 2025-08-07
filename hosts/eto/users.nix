@@ -14,7 +14,10 @@
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICHtv7BugMwASTVv4+FZi3HlSke0cCNogLuTQQVm/aWc"
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJ1pRhJvcW/L0Xzc5G+Lapg2OCCssWGi1bGs+9gSuXc07vSqfuTLHX1kJ1JGkGgWcEVUBYpyZ/aiKDPlKxTMdZY="
+      # Biometric key for Terminus on the device "zoè"
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBA0Izr6fwz7d/QNd3sao8KW7ymotB/HOFkM9V/V44NGxR95tktSX0zlEGM5OSTsLp35qemH6ix5z29RzPowJVsg="
+      # Biometric key for Terminus on the device "russell"
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNLa1S+CzqKhpRQUkQra9uEp3nkWsSRPuVqSPNgH3j5/LR+d382XMz6tAW174a9A+4W0u3fRdxFFMnL8L33ZQpw="
     ];
   };
 }
