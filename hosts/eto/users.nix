@@ -17,7 +17,7 @@
       # Biometric key for Terminus on the device "zoè"
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBA0Izr6fwz7d/QNd3sao8KW7ymotB/HOFkM9V/V44NGxR95tktSX0zlEGM5OSTsLp35qemH6ix5z29RzPowJVsg="
       # Biometric key for Terminus on the device "russell"
-      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBNLa1S+CzqKhpRQUkQra9uEp3nkWsSRPuVqSPNgH3j5/LR+d382XMz6tAW174a9A+4W0u3fRdxFFMnL8L33ZQpw="
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBj8Q6cfjjNjgL9rlMxNkffiS/YyHjtwulHQR+7/ugJhRRm+5i7hxlEmYVjK74IIPHfo9UrXVOxkmfaKgnIVDDU="
     ];
   };
 }
