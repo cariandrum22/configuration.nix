@@ -55,7 +55,8 @@
 
             # Host-specific configuration
             ./hosts/${hostName}/default.nix
-          ] ++ (nixpkgs.lib.optional (hostType == "wsl") inputs.nixos-wsl.nixosModules.default);
+          ]
+          ++ (nixpkgs.lib.optional (hostType == "wsl") inputs.nixos-wsl.nixosModules.default);
         };
     in
     {
