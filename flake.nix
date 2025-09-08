@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
 
@@ -19,17 +20,62 @@
         "aarch64-linux"
       ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+      # Helper function to create host configurations
+      mkHost =
+        {
+          hostName,
+          system ? "x86_64-linux",
+          hostType ? "physical", # physical, wsl, vm
+          hostRoles ? [ ], # desktop, development, server
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit
+              inputs
+              hostName
+              hostType
+              hostRoles
+              ;
+          };
+          modules = [
+            # Base configuration for all hosts
+            ./modules/profiles/base.nix
+
+            # Type-specific configuration
+            (
+              if hostType == "wsl" then
+                ./modules/profiles/wsl.nix
+              else if hostType == "physical" then
+                ./modules/profiles/physical.nix
+              else
+                { } # VM or other types can be added later
+            )
+
+            # Host-specific configuration
+            ./hosts/${hostName}/default.nix
+          ]
+          ++ (nixpkgs.lib.optional (hostType == "wsl") inputs.nixos-wsl.nixosModules.default);
+        };
     in
     {
       nixosConfigurations = {
-        eto = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit inputs;
-          };
-          modules = [
-            ./hosts/eto/default.nix
+        # Physical desktop machine
+        eto = mkHost {
+          hostName = "eto";
+          hostType = "physical";
+          hostRoles = [
+            "desktop"
+            "development"
           ];
+        };
+
+        # WSL development environment
+        virgil = mkHost {
+          hostName = "virgil";
+          hostType = "wsl";
+          hostRoles = [ "development" ];
         };
       };
 

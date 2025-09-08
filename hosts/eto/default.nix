@@ -1,8 +1,9 @@
+# eto - Physical desktop machine configuration
 {
   config,
   lib,
   pkgs,
-  inputs,
+  hostRoles,
   ...
 }:
 
@@ -17,16 +18,6 @@
     ./networking.nix
     ./virtualisation.nix
 
-    # Common modules
-    ../../modules/system/nix.nix
-    ../../modules/profiles/desktop.nix
-    ../../modules/profiles/developer.nix
-    ../../modules/profiles/japanese.nix
-    ../../modules/services/ssh.nix
-    ../../modules/services/polkit-agent.nix
-    ../../modules/security/certificates.nix
-    ../../modules/security/fingerprint.nix
-
     # User configuration
     ./users.nix
 
@@ -37,32 +28,22 @@
     ./services.nix
   ];
 
-  # Host identification
-  networking.hostName = "eto";
-
-  # Enable modules
+  # Module configuration
   modules = {
-    system.nix = {
-      enable = true;
-      trustedUsers = [
-        "root"
-        "claude"
-      ];
-      maxJobs = 28; # CPU-specific
-      allowUnfree = true;
-    };
+    # CPU-specific optimization
+    system.nix.maxJobs = 28;
 
     profiles = {
+      # Desktop configuration
       desktop = {
-        enable = true;
         windowManager = "xmonad";
         displayManager = "lightdm";
         enableGnomeKeyring = true;
         naturalScrolling = true;
       };
 
+      # Developer configuration
       developer = {
-        enable = true;
         languages = [
           "c"
           "nix"
@@ -71,84 +52,28 @@
         enableContainers = false;
       };
 
-      japanese = {
-        enable = true;
-        defaultLocale = "en_US.UTF-8";
-        timezone = "Asia/Tokyo";
-        inputMethod = "fcitx5";
-      };
+      # Japanese input method for desktop
+      japanese.inputMethod = "fcitx5";
     };
 
-    services.ssh = {
-      enable = true;
-      extraConfig = ''
-        StreamLocalBindUnlink yes
-        UseDNS no
-      '';
-    };
-
-    services.polkitAgent = {
-      enable = true;
-      package = pkgs.polkit_gnome; # Lightweight, works well with XMonad
-    };
-
-    security.certificates = {
-      enableInternalCAs = true;
-    };
-
+    # Security configuration
     security.fingerprint = {
       enable = true;
       enablePAM = true;
-      autoDetectDisplayManager = true; # Automatically configures LightDM
-      # Extended PAM services for comprehensive fingerprint support
+      autoDetectDisplayManager = true;
       pamServices = [
-        "login" # Console login
-        "sudo" # Elevated commands
-        "polkit-1" # GUI authentication dialogs
-        "lightdm-greeter" # Login screen (additional to auto-detected lightdm)
+        "login"
+        "sudo"
+        "polkit-1"
+        "lightdm-greeter"
       ];
     };
   };
 
-  # Unstable overlay
-  nixpkgs.overlays = [
-    (final: prev: {
-      unstable = import inputs.nixpkgs-unstable {
-        inherit (pkgs) system;
-        inherit (config.nixpkgs) config;
-      };
-    })
-  ];
-
-  # System packages that don't fit into profiles
+  # Host-specific packages
   environment.systemPackages = with pkgs; [
-    # NixOS specific
-    home-manager
-
     # Security tools
     yubico-pam
-
-    # System monitoring
-    lm_sensors
-    liquidctl
-    pciutils
-
-    # File management
-    p7zip
-    unzip
-
-    # Virtualization
-    virt-manager
-
-    # System utilities
-    dool
-    file
-    stress-ng
-    geekbench
-
-    # Terminal multiplexers
-    tmux
-    screen
 
     # X utilities
     xorg.xev
@@ -166,16 +91,5 @@
 
     # Gaming
     mangohud
-
-    # QEMU with UEFI
-    qemu
-    (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
-      qemu-system-x86_64 \
-        -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
-        "$@"
-    '')
   ];
-
-  # System state version
-  system.stateVersion = "25.05";
 }
