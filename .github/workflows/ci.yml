@@ -70,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        host: [eto]
+        host: [eto, virgil]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
