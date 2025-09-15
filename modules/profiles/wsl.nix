@@ -23,7 +23,7 @@
     # WSL-specific settings
     wslConf = {
       automount.root = "/mnt";
-      interop.appendWindowsPath = false;
+      interop.appendWindowsPath = true;
       network.generateHosts = false;
     };
   };
