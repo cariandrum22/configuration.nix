@@ -81,6 +81,9 @@
     tmux
     screen
 
+    # Shells
+    elvish
+
     # Network utilities
     wget
     curl
