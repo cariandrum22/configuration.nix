@@ -45,8 +45,8 @@ jobs:
           fi
           nix flake check --impure
 
-  lint:
-    name: Lint
+  lint-and-format:
+    name: Lint and format check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -61,9 +61,9 @@ jobs:
       - name: Setup Nix cache
         uses: DeterminateSystems/magic-nix-cache-action@v6
 
-      - name: Run pre-commit hooks
+      - name: Run pre-commit checks
         run: |
-          nix develop --impure --command bash -c "pre-commit run --all-files"
+          nix build --impure .#checks.x86_64-linux.pre-commit-check
 
   build:
     name: Build NixOS configurations
@@ -104,24 +104,3 @@ jobs:
         run: |
           nix build --impure \
             .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
-
-  format-check:
-    name: Check formatting
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v11
-        with:
-          extra-conf: |
-            experimental-features = nix-command flakes
-
-      - name: Setup Nix cache
-        uses: DeterminateSystems/magic-nix-cache-action@v6
-
-      - name: Check formatting with pre-commit
-        run: |
-          nix develop --impure --command pre-commit run nixfmt-rfc-style --all-files
-          nix develop --impure --command pre-commit run prettier --all-files

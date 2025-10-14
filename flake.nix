@@ -264,6 +264,9 @@
           buildInputs =
             with nixpkgs.legacyPackages.${system};
             [
+              # Pre-commit
+              pre-commit
+
               # Nix development tools
               nil
               nix-tree
