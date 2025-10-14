@@ -100,7 +100,7 @@ jobs:
           }
           EOF
 
-      - name: Build ${{ matrix.host }} configuration
+      - name: Build ${{ matrix.host }} configuration (dry-run)
         run: |
-          nix build --impure \
+          nix build --dry-run --impure \
             .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
