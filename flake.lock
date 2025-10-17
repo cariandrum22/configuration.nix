@@ -144,11 +144,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1760392170,
-        "narHash": "sha256-WftxJgr2MeDDFK47fQKywzC72L2jRc/PWcyGdjaDzkw=",
+        "lastModified": 1760660685,
+        "narHash": "sha256-pYzdGzIKOQcdPTrlxDeSgT3+BDGBeoPua5P232JIfgc=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "46d55f0aeb1d567a78223e69729734f3dca25a85",
+        "rev": "d665a44b7c3bcf6a2054c4e7876b6077f714e843",
         "type": "github"
       },
       "original": {
