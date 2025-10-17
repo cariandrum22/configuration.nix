@@ -7,15 +7,8 @@
   ...
 }:
 
-let
-  # Path to the system's auto-generated hardware configuration
-  systemHardwareConfig = /etc/nixos/hardware-configuration.nix;
-
-  # Check if the system hardware configuration exists
-  hasSystemConfig = builtins.pathExists systemHardwareConfig;
-in
 {
-  imports = lib.optional hasSystemConfig systemHardwareConfig;
+  imports = [ ./hardware-configuration.nix ];
 
   # Hardware-related configuration that's safe to version control
   # These settings complement the auto-generated hardware configuration
