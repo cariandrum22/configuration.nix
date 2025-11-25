@@ -3,7 +3,7 @@
     isNormalUser = true;
     home = "/home/claude";
     description = "Takafumi Asano";
-    shell = "/run/current-system/sw/bin/fish";
+    shell = "/run/current-system/sw/bin/elvish";
     extraGroups = [
       "wheel"
       "networkmanager"
