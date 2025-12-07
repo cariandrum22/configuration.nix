@@ -99,8 +99,7 @@ in
 
         # Additional fonts for better coverage
         noto-fonts
-        noto-fonts-extra
-        noto-fonts-emoji
+        noto-fonts-color-emoji
 
         # Programming fonts with Japanese support
         fira-code

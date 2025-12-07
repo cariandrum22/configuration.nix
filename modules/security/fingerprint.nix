@@ -67,9 +67,15 @@ in
           cfg.pamServices
           ++ (
             if cfg.autoDetectDisplayManager then
-              (optional config.services.xserver.displayManager.lightdm.enable "lightdm")
-              ++ (optional config.services.xserver.displayManager.gdm.enable "gdm")
-              ++ (optional config.services.displayManager.sddm.enable "sddm")
+              (optional (
+                config.services.displayManager ? lightdm && config.services.displayManager.lightdm.enable
+              ) "lightdm")
+              ++ (optional (
+                config.services.displayManager ? gdm && config.services.displayManager.gdm.enable
+              ) "gdm")
+              ++ (optional (
+                config.services.displayManager ? sddm && config.services.displayManager.sddm.enable
+              ) "sddm")
               ++ (optional config.services.xserver.enable "xscreensaver")
             else
               [ ]

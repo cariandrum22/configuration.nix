@@ -52,7 +52,7 @@
   nixpkgs.overlays = [
     (final: prev: {
       unstable = import inputs.nixpkgs-unstable {
-        inherit (pkgs) system;
+        inherit (pkgs.stdenv.hostPlatform) system;
         inherit (config.nixpkgs) config;
       };
     })
@@ -91,5 +91,5 @@
   ];
 
   # System state version
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }
