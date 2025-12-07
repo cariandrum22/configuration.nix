@@ -52,7 +52,7 @@
   nixpkgs.overlays = [
     (final: prev: {
       unstable = import inputs.nixpkgs-unstable {
-        inherit (pkgs) system;
+        inherit (pkgs.stdenv.hostPlatform) system;
         inherit (config.nixpkgs) config;
       };
     })
