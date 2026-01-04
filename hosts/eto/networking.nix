@@ -2,7 +2,16 @@
   networking = {
     hostName = "eto";
 
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi.powersave = false;
+      unmanaged = [
+        "interface-name:docker0"
+        "interface-name:br-*"
+        "interface-name:veth*"
+        "interface-name:virbr*"
+      ];
+    };
 
     # Firewall
     firewall = {
