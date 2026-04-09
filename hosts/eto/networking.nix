@@ -1,9 +1,14 @@
+{ pkgs, ... }:
+
 {
   networking = {
     hostName = "eto";
 
     networkmanager = {
       enable = true;
+      plugins = with pkgs; [
+        networkmanager-openvpn
+      ];
       wifi.powersave = false;
       unmanaged = [
         "interface-name:docker0"
