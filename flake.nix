@@ -74,6 +74,13 @@
           ];
         };
 
+        # Physical headless machine
+        chetter = mkHost {
+          hostName = "chetter";
+          hostType = "vm";
+          hostRoles = [ "development" ];
+        };
+
         # WSL development environment
         virgil = mkHost {
           hostName = "virgil";
