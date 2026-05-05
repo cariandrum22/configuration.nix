@@ -100,7 +100,6 @@ in
         btop
 
         # Version control
-        gh
         git-lfs
       ]
       # Language-specific tools
