@@ -86,8 +86,6 @@ in
         delta
 
         # Network debugging
-        curl
-        wget
         httpie
         netcat
         dnsutils
@@ -96,11 +94,9 @@ in
         strace
         ltrace
         lsof
-        htop
         btop
 
         # Version control
-        gh
         git-lfs
       ]
       # Language-specific tools

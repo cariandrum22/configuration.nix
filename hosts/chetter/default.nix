@@ -27,14 +27,13 @@
         ];
         editor = "emacs";
         enableContainers = false;
+        extraPackages = with pkgs; [
+          yubico-pam
+        ];
       };
 
       # Headless hosts do not need a desktop input method daemon.
       japanese.inputMethod = "none";
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    yubico-pam
-  ];
 }
