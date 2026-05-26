@@ -15,17 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        # actions/checkout v6.0.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          persist-credentials: false
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v11
+        # DeterminateSystems/nix-installer-action v22
+        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25
         with:
           extra-conf: |
             experimental-features = nix-command flakes
 
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v20
+        # DeterminateSystems/update-flake-lock v28
+        uses: DeterminateSystems/update-flake-lock@834c491b2ece4de0bbd00d85214bb5e83b4da5c6
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           pr-title: "chore: update flake.lock"
           pr-body: |
             Automated update of `flake.lock` file.
