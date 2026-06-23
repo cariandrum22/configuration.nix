@@ -1,8 +1,9 @@
 # chetter - Physical headless machine configuration
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ../../modules/profiles/developer.nix
     ./hardware.nix
     ./boot.nix
@@ -12,6 +13,7 @@
     ./programs.nix
     ./security.nix
     ./services.nix
+    ./staging-provisioning-vpn.nix
   ];
 
   modules = {
