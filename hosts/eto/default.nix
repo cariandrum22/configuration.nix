@@ -76,10 +76,10 @@
     yubico-pam
 
     # X utilities
-    xorg.xev
-    xorg.xmodmap
-    xorg.xrandr
-    xorg.xmessage
+    xev
+    xmodmap
+    xrandr
+    xmessage
 
     # Desktop utilities
     networkmanagerapplet

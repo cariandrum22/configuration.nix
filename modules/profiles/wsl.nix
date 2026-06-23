@@ -37,9 +37,6 @@
 
   # WSL specific packages
   environment.systemPackages = with pkgs; [
-    # WSL utilities
-    wslu
-
     # Network tools for WSL
     socat
   ];
