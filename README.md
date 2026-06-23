@@ -47,7 +47,7 @@ This project uses pre-commit hooks to maintain code quality. The following check
 
 **Nix files:**
 
-- nixfmt-rfc-style: Formats code according to RFC-166
+- nixfmt: Formats Nix code
 - deadnix: Detects unused bindings and imports
 - statix: Identifies anti-patterns and suggests improvements
 

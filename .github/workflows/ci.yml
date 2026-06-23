@@ -15,6 +15,14 @@ jobs:
     name: Check flake
     runs-on: ubuntu-latest
     steps:
+      - name: Configure runner defaults
+        run: |
+          git config --global init.defaultBranch main
+          sudo sed -i -E \
+            -e 's/^[#[:space:]]*SYS_UID_MAX[[:space:]]+.*/SYS_UID_MAX 39999/' \
+            -e 's/^[#[:space:]]*SYS_GID_MAX[[:space:]]+.*/SYS_GID_MAX 39999/' \
+            /etc/login.defs
+
       - name: Checkout repository
         # actions/checkout v6.0.2
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -22,15 +30,13 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        # DeterminateSystems/nix-installer-action v22
-        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25
+        # cachix/install-nix-action v31.10.6
+        uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3
         with:
-          extra-conf: |
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
             experimental-features = nix-command flakes
-
-      - name: Setup Nix cache
-        # DeterminateSystems/magic-nix-cache-action v13
-        uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39
+            trusted-users = root runner
 
       - name: Check flake
         run: |
@@ -48,12 +54,20 @@ jobs:
           }
           EOF
           fi
-          nix flake check --impure
+          nix flake check --impure --all-systems --no-build
 
   lint-and-format:
     name: Lint and format check
     runs-on: ubuntu-latest
     steps:
+      - name: Configure runner defaults
+        run: |
+          git config --global init.defaultBranch main
+          sudo sed -i -E \
+            -e 's/^[#[:space:]]*SYS_UID_MAX[[:space:]]+.*/SYS_UID_MAX 39999/' \
+            -e 's/^[#[:space:]]*SYS_GID_MAX[[:space:]]+.*/SYS_GID_MAX 39999/' \
+            /etc/login.defs
+
       - name: Checkout repository
         # actions/checkout v6.0.2
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -61,15 +75,13 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        # DeterminateSystems/nix-installer-action v22
-        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25
+        # cachix/install-nix-action v31.10.6
+        uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3
         with:
-          extra-conf: |
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
             experimental-features = nix-command flakes
-
-      - name: Setup Nix cache
-        # DeterminateSystems/magic-nix-cache-action v13
-        uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39
+            trusted-users = root runner
 
       - name: Run pre-commit checks
         run: |
@@ -82,6 +94,14 @@ jobs:
       matrix:
         host: [eto, virgil]
     steps:
+      - name: Configure runner defaults
+        run: |
+          git config --global init.defaultBranch main
+          sudo sed -i -E \
+            -e 's/^[#[:space:]]*SYS_UID_MAX[[:space:]]+.*/SYS_UID_MAX 39999/' \
+            -e 's/^[#[:space:]]*SYS_GID_MAX[[:space:]]+.*/SYS_GID_MAX 39999/' \
+            /etc/login.defs
+
       - name: Checkout repository
         # actions/checkout v6.0.2
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
@@ -89,15 +109,13 @@ jobs:
           persist-credentials: false
 
       - name: Install Nix
-        # DeterminateSystems/nix-installer-action v22
-        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25
+        # cachix/install-nix-action v31.10.6
+        uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3
         with:
-          extra-conf: |
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
             experimental-features = nix-command flakes
-
-      - name: Setup Nix cache
-        # DeterminateSystems/magic-nix-cache-action v13
-        uses: DeterminateSystems/magic-nix-cache-action@565684385bcd71bad329742eefe8d12f2e765b39
+            trusted-users = root runner
 
       - name: Create dummy hardware configuration
         run: |
