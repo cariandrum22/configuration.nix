@@ -9,6 +9,10 @@
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -197,7 +201,10 @@
                   "markdown"
                   "yaml"
                 ];
-                excludes = [ "^.pre-commit-config\\.yaml$" ];
+                excludes = [
+                  "^.pre-commit-config\\.yaml$"
+                  ".*\\.secrets\\.yaml$"
+                ];
                 settings = {
                   prose-wrap = "always"; # Wrap markdown at print width
                   print-width = 100;
@@ -215,6 +222,7 @@
 
               yamllint = systemHook // {
                 enable = true;
+                excludes = [ ".*\\.secrets\\.yaml$" ];
                 settings = {
                   preset = "default";
                   configuration = ''

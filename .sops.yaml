@@ -1,0 +1,5 @@
+keys:
+  - &chetter age1ax7h2qgh9jj72wyegsz428w2ezay02ll7rcxqvqq32uml0ffxghqanh9v2
+creation_rules:
+  - path_regex: hosts/chetter/.*\.secrets\.yaml$
+    age: *chetter
