@@ -94,7 +94,7 @@
       };
 
       # Formatter for nix files
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
       checks = forAllSystems (
         system:
@@ -112,6 +112,7 @@
               # Nix
               nixfmt-rfc-style = systemHook // {
                 enable = true;
+                package = nixpkgs.legacyPackages.${system}.nixfmt;
               };
               deadnix = systemHook // {
                 enable = true;

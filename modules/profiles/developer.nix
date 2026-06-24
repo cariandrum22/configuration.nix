@@ -138,7 +138,7 @@ in
       ])
       ++ (optionals (elem "nix" cfg.languages) [
         nil
-        nixfmt-rfc-style
+        nixfmt
         nix-prefetch-scripts
         nix-tree
         nix-diff
