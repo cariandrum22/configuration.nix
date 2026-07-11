@@ -99,6 +99,12 @@
       checks = forAllSystems (
         system:
         let
+          unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+          commitizenForHook = unstablePkgs.commitizen.overridePythonAttrs (_: {
+            # Python 3.14 argparse output currently breaks an upstream snapshot
+            # test; the hook only needs the installed CLI.
+            doCheck = false;
+          });
           systemHook = {
             # Keep git-hooks.nix output compatible with the pre-commit version
             # embedded in installed hooks on this host.
@@ -283,6 +289,7 @@
               # Commit message
               commitizen = systemHook // {
                 enable = true;
+                package = commitizenForHook;
                 stages = [ "commit-msg" ];
               };
             };
