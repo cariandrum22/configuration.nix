@@ -8,6 +8,7 @@
     ./hardware.nix
     ./boot.nix
     ./networking.nix
+    ./even-terminal-wireguard.nix
     ./virtualisation.nix
     ./users.nix
     ./programs.nix
