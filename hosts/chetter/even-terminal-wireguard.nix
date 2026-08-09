@@ -49,6 +49,7 @@ in
             type filter hook input priority -10; policy accept;
 
             iifname "${wireguardInterface}" ip saddr != ${iphoneAddress} counter drop comment "reject spoofed WireGuard source"
+            iifname "${wireguardInterface}" ip daddr != ${wireguardAddress} counter drop comment "restrict WireGuard to its host address"
             iifname "${wireguardInterface}" meta l4proto != tcp counter drop comment "restrict WireGuard to Even Terminal"
             iifname "${wireguardInterface}" tcp dport != ${toString evenTerminalPort} counter drop comment "restrict WireGuard to Even Terminal"
           }
