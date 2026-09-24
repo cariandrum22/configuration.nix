@@ -13,7 +13,7 @@ permissions:
 jobs:
   check-flake:
     name: Check flake
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Configure runner defaults
         run: |
@@ -58,7 +58,7 @@ jobs:
 
   lint-and-format:
     name: Lint and format check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Configure runner defaults
         run: |
@@ -89,7 +89,7 @@ jobs:
 
   build:
     name: Build NixOS configurations
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         host: [eto, virgil]
