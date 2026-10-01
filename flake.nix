@@ -116,7 +116,7 @@
             src = ./.;
             hooks = {
               # Nix
-              nixfmt-rfc-style = systemHook // {
+              nixfmt = systemHook // {
                 enable = true;
                 package = nixpkgs.legacyPackages.${system}.nixfmt;
               };
