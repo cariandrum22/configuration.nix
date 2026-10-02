@@ -78,7 +78,7 @@
           ];
         };
 
-        # Physical headless machine
+        # AWS headless development host
         chetter = mkHost {
           hostName = "chetter";
           hostType = "vm";
@@ -98,29 +98,16 @@
 
       checks = forAllSystems (
         system:
-        let
-          unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
-          commitizenForHook = unstablePkgs.commitizen.overridePythonAttrs (_: {
-            # Python 3.14 argparse output currently breaks an upstream snapshot
-            # test; the hook only needs the installed CLI.
-            doCheck = false;
-          });
-          systemHook = {
-            # Keep git-hooks.nix output compatible with the pre-commit version
-            # embedded in installed hooks on this host.
-            language = "system";
-          };
-        in
         {
           pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
             src = ./.;
             hooks = {
               # Nix
-              nixfmt = systemHook // {
+              nixfmt = {
                 enable = true;
                 package = nixpkgs.legacyPackages.${system}.nixfmt;
               };
-              deadnix = systemHook // {
+              deadnix = {
                 enable = true;
                 settings = {
                   noLambdaArg = true;
@@ -129,7 +116,7 @@
                   quiet = false; # Show all potential issues
                 };
               };
-              statix = systemHook // {
+              statix = {
                 enable = true;
                 settings = {
                   # Statix checks for anti-patterns by default
@@ -138,7 +125,7 @@
               };
 
               # Markdown
-              markdownlint = systemHook // {
+              markdownlint = {
                 enable = true;
                 settings = {
                   configuration = {
@@ -202,7 +189,7 @@
                   };
                 };
               };
-              prettier = systemHook // {
+              prettier = {
                 enable = true;
                 types_or = [
                   "markdown"
@@ -222,12 +209,12 @@
               };
 
               # EditorConfig compliance check
-              editorconfig-checker = systemHook // {
+              editorconfig-checker = {
                 enable = true;
                 always_run = true;
               };
 
-              yamllint = systemHook // {
+              yamllint = {
                 enable = true;
                 excludes = [ ".*\\.secrets\\.yaml$" ];
                 settings = {
@@ -282,29 +269,36 @@
               };
 
               # GitHub Actions
-              actionlint = systemHook // {
+              actionlint = {
                 enable = true;
               };
 
               # Commit message
-              commitizen = systemHook // {
+              commitizen = {
                 enable = true;
-                package = commitizenForHook;
                 stages = [ "commit-msg" ];
               };
             };
           };
         }
+        // nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          # Build-time SOPS validation checks encrypted keys without decrypting secrets.
+          chetter-sops-manifest = self.nixosConfigurations.chetter.config.system.build.sops-nix-manifest;
+        }
       );
-      devShells = forAllSystems (system: {
-        default = nixpkgs.legacyPackages.${system}.mkShell {
-          inherit (self.checks.${system}.pre-commit-check) shellHook;
-          buildInputs =
-            with nixpkgs.legacyPackages.${system};
-            [
-              # Pre-commit
-              pre-commit
-
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          preCommitCheck = self.checks.${system}.pre-commit-check;
+        in
+        {
+          default = pkgs.mkShell {
+            inherit (preCommitCheck) shellHook;
+            packages = [
+              preCommitCheck.config.package
+            ]
+            ++ (with pkgs; [
               # Nix development tools
               nil
               nix-tree
@@ -324,9 +318,10 @@
 
               # CI testing
               act
-            ]
-            ++ self.checks.${system}.pre-commit-check.enabledPackages;
-        };
-      });
+            ])
+            ++ preCommitCheck.enabledPackages;
+          };
+        }
+      );
     };
 }

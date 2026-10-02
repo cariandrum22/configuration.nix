@@ -10,10 +10,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   check-flake:
     name: Check flake
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
     steps:
       - name: Configure runner defaults
         run: |
@@ -39,26 +44,12 @@ jobs:
             trusted-users = root runner
 
       - name: Check flake
-        run: |
-          # For CI, we need to ensure hardware configuration exists
-          if [ ! -f /etc/nixos/hardware-configuration.nix ]; then
-            echo "Creating dummy hardware configuration for CI..."
-            sudo mkdir -p /etc/nixos
-            sudo tee /etc/nixos/hardware-configuration.nix > /dev/null << 'EOF'
-          { config, lib, pkgs, modulesPath, ... }:
-          {
-            fileSystems."/" = {
-              device = "/dev/disk/by-label/nixos";
-              fsType = "ext4";
-            };
-          }
-          EOF
-          fi
-          nix flake check --impure --all-systems --no-build
+        run: nix flake check --all-systems --no-build --no-update-lock-file
 
   lint-and-format:
-    name: Lint and format check
+    name: Lint and secret validation
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     steps:
       - name: Configure runner defaults
         run: |
@@ -83,16 +74,20 @@ jobs:
             experimental-features = nix-command flakes
             trusted-users = root runner
 
-      - name: Run pre-commit checks
+      - name: Build lint and SOPS checks
         run: |
-          nix build --impure .#checks.x86_64-linux.pre-commit-check
+          nix build --no-link --no-update-lock-file --print-build-logs \
+            .#checks.x86_64-linux.pre-commit-check \
+            .#checks.x86_64-linux.chetter-sops-manifest
 
   build:
-    name: Build NixOS configurations
+    name: Plan NixOS build (${{ matrix.host }})
     runs-on: ubuntu-24.04
+    timeout-minutes: 30
     strategy:
+      fail-fast: false
       matrix:
-        host: [eto, virgil]
+        host: [eto, chetter, virgil]
     steps:
       - name: Configure runner defaults
         run: |
@@ -117,23 +112,7 @@ jobs:
             experimental-features = nix-command flakes
             trusted-users = root runner
 
-      - name: Create dummy hardware configuration
+      - name: Plan ${{ matrix.host }} build (dry-run)
         run: |
-          sudo mkdir -p /etc/nixos
-          sudo tee /etc/nixos/hardware-configuration.nix > /dev/null << 'EOF'
-          { config, lib, pkgs, modulesPath, ... }:
-          {
-            boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_blk" ];
-            boot.kernelModules = [ ];
-
-            fileSystems."/" = {
-              device = "/dev/disk/by-label/nixos";
-              fsType = "ext4";
-            };
-          }
-          EOF
-
-      - name: Build ${{ matrix.host }} configuration (dry-run)
-        run: |
-          nix build --dry-run --impure \
+          nix build --dry-run --no-link --no-update-lock-file \
             .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
